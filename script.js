@@ -8,11 +8,11 @@ const config = {
 	days: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
 	lessons: [1, 2, 3, 4, 5],
 	initialData: [
-		['Chào cờ', 'Lịch sử', 'Tin học', 'Vật lý', 'Tiếng Anh', 'Sinh học'],
-		['Tiếng Anh', 'Thể dục', 'Vật lý', 'Hóa học', 'GDĐP', 'HĐTN&HN'],
-		['Toán', 'Hóa học', 'Ngữ văn', 'Toán', 'Sinh học', 'Toán'],
-		['Hóa học', 'Tin học', 'Ngữ văn', 'Toán', 'Thể dục', 'Vật lý'],
-		['Lịch sử', 'Ngữ văn', 'Tiếng Anh', '', 'GDQP&AN', 'Sinh hoạt']
+		['Chào cờ', 'Lịch sử', 'Tin học', 'Vật lý', 'Tiếng Anh', 'Sinh học'], // Tiết 1
+		['Tiếng Anh', 'Thể dục', 'Vật lý', 'Hóa học', 'GDĐP', 'HĐTN&HN'],     // Tiết 2
+		['Toán', 'Hóa học', 'Ngữ văn', 'Toán', 'Sinh học', 'Toán'],           // Tiết 3
+		['Hóa học', 'Tin học', 'Ngữ văn', 'Toán', 'Thể dục', 'Vật lý'],       // Tiết 4
+		['Lịch sử', 'Ngữ văn', 'Tiếng Anh', '', 'GDQP&AN', 'Sinh hoạt'],      // Tiết 5
 	]
 };
 
