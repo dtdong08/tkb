@@ -16,6 +16,21 @@ const config = {
 	]
 };
 
+function addCellClickHandlers() {
+	const cells = document.querySelectorAll('#timetable td:not(:first-child)');
+	cells.forEach(cell => {
+		cell.addEventListener('click', () => {
+			const day = cell.dataset.day;
+			const lesson = cell.dataset.lesson;
+			const subject = cell.textContent;
+
+			document.getElementById('daySelect').value = day;
+			document.getElementById('lessonSelect').value = lesson;
+			document.getElementById('subjectSelect').value = subject;
+		});
+	});
+}
+
 function initTimetable() {
 	const tbody = document.querySelector('#timetable tbody');
 	tbody.innerHTML = '';
@@ -36,6 +51,7 @@ function initTimetable() {
 		
 		tbody.appendChild(tr);
 	});
+	addCellClickHandlers();
 }
 
 function initControls() {
@@ -84,7 +100,16 @@ function updateCell() {
 	localStorage.setItem('timetable', JSON.stringify(data));
 }
 
+function resetTimetable() {
+	localStorage.removeItem('timetable');
+	initTimetable();
+	document.getElementById('daySelect').selectedIndex = 0;
+	document.getElementById('lessonSelect').selectedIndex = 0;
+	document.getElementById('subjectSelect').selectedIndex = 0;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	initControls();
 	initTimetable();
+	addCellClickHandlers();
 });

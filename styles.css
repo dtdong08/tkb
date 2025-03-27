@@ -34,11 +34,13 @@ th {
 
 .controls {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    max-width: 600px;
+    width: auto;
+    margin: 20px 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 select, button {
@@ -46,4 +48,17 @@ select, button {
     border: 1px solid var(--line-color);
     background: var(--bg-color);
     color: var(--text-color);
+}
+
+#timetable {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#timetable td:first-child {
+    font-weight: bold;
+}
+
+.reset-btn {
+    margin-left: 0;
 }
