@@ -25,7 +25,7 @@ function addCellClickHandlers() {
 			const subject = cell.textContent;
 
 			document.getElementById('daySelect').value = day;
-			document.getElementById('lessonSelect').value = lesson;
+			document.getElementById('lessonSelect').value = 'Tiết ' + lesson;
 			document.getElementById('subjectSelect').value = subject;
 		});
 	});
@@ -39,7 +39,7 @@ function initTimetable() {
 
 	data.forEach((row, rowIndex) => {
 		const tr = document.createElement('tr');
-		tr.innerHTML = `<td>${rowIndex + 1}</td>`;
+		tr.innerHTML = `<td>Tiết ${rowIndex + 1}</td>`;
 		
 		row.forEach((cell, colIndex) => {
 			const td = document.createElement('td');
@@ -69,7 +69,7 @@ function initControls() {
 	config.lessons.forEach(lesson => {
 		const option = document.createElement('option');
 		option.value = lesson;
-		option.textContent = lesson;
+		option.textContent = 'Tiết ' + lesson;
 		lessonSelect.appendChild(option);
 	});
 
@@ -101,11 +101,14 @@ function updateCell() {
 }
 
 function resetTimetable() {
-	localStorage.removeItem('timetable');
-	initTimetable();
-	document.getElementById('daySelect').selectedIndex = 0;
-	document.getElementById('lessonSelect').selectedIndex = 0;
-	document.getElementById('subjectSelect').selectedIndex = 0;
+	const ans = prompt('Nhập "OK" để xác nhận');
+	if (ans === 'OK') {
+		localStorage.removeItem('timetable');
+		initTimetable();
+		document.getElementById('daySelect').selectedIndex = 0;
+		document.getElementById('lessonSelect').selectedIndex = 0;
+		document.getElementById('subjectSelect').selectedIndex = 0;
+	}
 }
 
 document.addEventListener('DOMContentLoaded', () => {

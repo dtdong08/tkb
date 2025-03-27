@@ -1,64 +1,64 @@
 :root {
-    --bg-color: #f0f0f0;
-    --text-color: #333;
-    --line-color: #666;
-    --header-bg: #e0e0e0;
+	--bg-color: #f0f0f0;
+	--text-color: #333333;
+	--line-color: #666666;
+	--header-bg: #e0e0e0;
 }
 
 body {
-    background: var(--bg-color);
-    color: var(--text-color);
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+	background: var(--bg-color);
+	color: var(--text-color);
+	font-family: Arial, sans-serif;
+	margin: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 100vh;
 }
 
 table {
-    border-collapse: collapse;
-    margin: 20px auto;
+	border-collapse: collapse;
+	margin: 20px auto;
 }
 
 th, td {
-    border: 1px solid var(--line-color);
-    padding: 8px 12px;
-    text-align: center;
+	border: 1px solid var(--line-color);
+	padding: 8px 12px;
+	text-align: center;
 }
 
 th {
-    background-color: var(--header-bg);
-    font-weight: bold;
+	background-color: var(--header-bg);
+	font-weight: bold;
 }
 
 .controls {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    margin: 20px 0;
-    padding: 0;
-    box-sizing: border-box;
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	margin: 20px 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 select, button {
-    padding: 5px 10px;
-    border: 1px solid var(--line-color);
-    background: var(--bg-color);
-    color: var(--text-color);
+	padding: 5px 10px;
+	border: 1px solid var(--line-color);
+	background: var(--bg-color);
+	color: var(--text-color);
 }
 
 #timetable {
-    user-select: none;
-    -webkit-user-select: none;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #timetable td:first-child {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .reset-btn {
-    margin-left: 0;
+	margin-left: 0;
 }
