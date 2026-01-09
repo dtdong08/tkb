@@ -8,7 +8,7 @@
 body {
 	background: var(--bg-color);
 	color: var(--text-color);
-	font-family: Arial, sans-serif;
+	font-family: Roboto, sans-serif;
 	margin: 20px;
 	display: flex;
 	flex-direction: column;
