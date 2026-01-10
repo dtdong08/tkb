@@ -1,60 +1,70 @@
 const config = {
 	subjects: [
-		'Toán', 'Ngữ văn', 'Tiếng Anh', 'Vật lý', 
+		'Toán', 'Ngữ văn', 'Tiếng Anh', 'Vật lý',
 		'Hóa học', 'Sinh học', 'Lịch sử', 'Tin học',
 		'Thể dục', 'GDĐP', 'HĐTN&HN', 'GDQP&AN',
 		'Chào cờ', 'Sinh hoạt', ''
 	],
 	days: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'],
-	lessons: [1, 2, 3, 4, 5, 'Chiều', 'Tối'],
-	initialData: [
-		['Chào cờ', 'Lịch sử', 'Tin học', 'Vật lý', 'Tiếng Anh', 'Sinh học', ''], // Tiết 1
-		['Tiếng Anh', 'Thể dục', 'Vật lý', 'Hóa học', 'GDĐP', 'HĐTN&HN', ''],     // Tiết 2
-		['Toán', 'Hóa học', 'Ngữ văn', 'Toán', 'Sinh học', 'Toán', ''],           // Tiết 3
-		['Hóa học', 'Tin học', 'Ngữ văn', 'Toán', 'Thể dục', 'Vật lý', ''],       // Tiết 4
-		['Lịch sử', 'Ngữ văn', 'Tiếng Anh', '', 'GDQP&AN', 'Sinh hoạt', ''],      // Tiết 5
-		['', '', '', '', '', '', ''],                                             // Chiều
-		['', '', '', '', '', '', ''],                                             // Tối
+	blocks: [
+		{ name: 'Sáng', lessons: 5 },
+		{ name: 'Chiều', lessons: 3 },
+		{ name: 'Tối', lessons: 1 }
 	]
 };
-
-function addCellClickHandlers() {
-	const cells = document.querySelectorAll('#timetable td:not(:first-child)');
-	cells.forEach(cell => {
-		cell.addEventListener('click', () => {
-			const day = cell.dataset.day;
-			const lesson = cell.dataset.lesson;
-			const subject = cell.textContent;
-
-			document.getElementById('daySelect').value = day;
-			document.getElementById('lessonSelect').value = Number.isInteger(lesson) ? `Tiết ${lesson}` : lesson;
-			document.getElementById('subjectSelect').value = subject;
-		});
-	});
-}
 
 function initTimetable() {
 	const tbody = document.querySelector('#timetable tbody');
 	tbody.innerHTML = '';
 
-	const data = JSON.parse(localStorage.getItem('timetable')) || config.initialData;
+	const saved = JSON.parse(localStorage.getItem('timetable')) || {};
 
-	data.forEach((row, rowIndex) => {
-		const tr = document.createElement('tr');
-		if (rowIndex === 5) tr.innerHTML = '<td>Chiều</td>';
-		else if (rowIndex === 6) tr.innerHTML = '<td>Tối</td>';
-		else tr.innerHTML = `<td>Tiết ${rowIndex + 1}</td>`;
-		
-		row.forEach((cell, colIndex) => {
+	config.blocks.forEach(block => {
+		// Tạo dòng đầu của block (có ô block với rowspan)
+		const firstTr = document.createElement('tr');
+		const blockTd = document.createElement('td');
+		blockTd.textContent = block.name;
+		blockTd.rowSpan = block.lessons;
+		firstTr.appendChild(blockTd);
+
+		// ô "Tiết 1"
+		const lessonTd = document.createElement('td');
+		lessonTd.textContent = `Tiết 1`;
+		firstTr.appendChild(lessonTd);
+
+		// các ô theo ngày
+		config.days.forEach(day => {
 			const td = document.createElement('td');
-			td.dataset.day = config.days[colIndex];
-			td.dataset.lesson = rowIndex + 1;
-			td.textContent = cell;
-			tr.appendChild(td);
+			td.dataset.block = block.name;
+			td.dataset.lesson = 1;
+			td.dataset.day = day;
+			td.textContent = (saved?.[block.name]?.[1]?.[day]) || '';
+			firstTr.appendChild(td);
 		});
-		
-		tbody.appendChild(tr);
+
+		tbody.appendChild(firstTr);
+
+		// các dòng tiếp theo của block (Tiết 2..n)
+		for (let i = 2; i <= block.lessons; i++) {
+			const tr = document.createElement('tr');
+
+			const lessonTdN = document.createElement('td');
+			lessonTdN.textContent = `Tiết ${i}`;
+			tr.appendChild(lessonTdN);
+
+			config.days.forEach(day => {
+				const td = document.createElement('td');
+				td.dataset.block = block.name;
+				td.dataset.lesson = i;
+				td.dataset.day = day;
+				td.textContent = (saved?.[block.name]?.[i]?.[day]) || '';
+				tr.appendChild(td);
+			});
+
+			tbody.appendChild(tr);
+		}
 	});
+
 	addCellClickHandlers();
 }
 
@@ -63,50 +73,69 @@ function initControls() {
 	const lessonSelect = document.getElementById('lessonSelect');
 	const subjectSelect = document.getElementById('subjectSelect');
 
+	daySelect.innerHTML = '';
+	lessonSelect.innerHTML = '';
+	subjectSelect.innerHTML = '';
+
 	config.days.forEach(day => {
-		const option = document.createElement('option');
-		option.value = day;
-		option.textContent = day;
-		daySelect.appendChild(option);
+		const o = document.createElement('option');
+		o.value = day;
+		o.textContent = day;
+		daySelect.appendChild(o);
 	});
 
-	config.lessons.forEach(lesson => {
-		const option = document.createElement('option');
-		option.value = lesson;
-		option.textContent = Number.isInteger(lesson) ? `Tiết ${lesson}` : lesson;
-		lessonSelect.appendChild(option);
+	config.blocks.forEach(block => {
+		for (let i = 1; i <= block.lessons; i++) {
+			const o = document.createElement('option');
+			o.value = `${block.name}-${i}`;
+			o.textContent = `${block.name} – Tiết ${i}`;
+			lessonSelect.appendChild(o);
+		}
 	});
 
-	config.subjects.forEach(subject => {
-		const option = document.createElement('option');
-		option.value = subject;
-		option.textContent = subject;
-		subjectSelect.appendChild(option);
+	config.subjects.forEach(sub => {
+		const o = document.createElement('option');
+		o.value = sub;
+		o.textContent = sub;
+		subjectSelect.appendChild(o);
+	});
+}
+
+function addCellClickHandlers() {
+	document.querySelectorAll('#timetable td[data-day]').forEach(td => {
+		td.onclick = () => {
+			document.getElementById('daySelect').value = td.dataset.day;
+			document.getElementById('lessonSelect').value = `${td.dataset.block}-${td.dataset.lesson}`;
+			document.getElementById('subjectSelect').value = td.textContent;
+		};
 	});
 }
 
 function updateCell() {
 	const day = document.getElementById('daySelect').value;
-	const lesson = document.getElementById('lessonSelect').value;
+	const lessonVal = document.getElementById('lessonSelect').value;
 	const subject = document.getElementById('subjectSelect').value;
 
-	const dayIndex = config.days.indexOf(day);
-	const lessonIndex = config.lessons.indexOf(lesson);
+	const [block, lesson] = lessonVal.split('-');
 
-	const tbody = document.querySelector('#timetable tbody');
-	const row = tbody.children[lessonIndex];
-	const cell = row.children[dayIndex + 1];
+	const cell = document.querySelector(
+		`td[data-block="${block}"][data-lesson="${lesson}"][data-day="${day}"]`
+	);
+
+	if (!cell) return;
+
 	cell.textContent = subject;
 
-	const data = Array.from(tbody.children).map(row => 
-		Array.from(row.children).slice(1).map(cell => cell.textContent)
-	);
+	const data = JSON.parse(localStorage.getItem('timetable')) || {};
+	if (!data[block]) data[block] = {};
+	if (!data[block][lesson]) data[block][lesson] = {};
+	data[block][lesson][day] = subject;
+
 	localStorage.setItem('timetable', JSON.stringify(data));
 }
 
 function resetTimetable() {
-	const ans = prompt('Nhập "OK" để xác nhận');
-	if (ans === 'OK') {
+	if (prompt('Nhập "OK" để xác nhận') === 'OK') {
 		localStorage.removeItem('timetable');
 		initTimetable();
 		document.getElementById('daySelect').selectedIndex = 0;
@@ -118,5 +147,4 @@ function resetTimetable() {
 document.addEventListener('DOMContentLoaded', () => {
 	initControls();
 	initTimetable();
-	addCellClickHandlers();
 });

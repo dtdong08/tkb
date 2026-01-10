@@ -7,6 +7,9 @@
 }
 
 body {
+	position: fixed;
+	overflow-y: scroll;
+	width: 100%;
 	background: var(--bg-color);
 	color: var(--text-color);
 	font-family: var(--font-family);
@@ -57,6 +60,10 @@ select, button {
 }
 
 #timetable td:first-child {
+	font-weight: bold;
+}
+
+#timetable td:nth-child(2) {
 	font-weight: bold;
 }
 
