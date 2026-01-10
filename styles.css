@@ -1,14 +1,16 @@
 :root {
-	--bg-color: #f0f0f0;
-	--text-color: #333333;
-	--line-color: #666666;
-	--header-bg: #e0e0e0;
+	--bg-color: #ffffff;
+	--text-color: #000000;
+	--line-color: #000000;
+	--header-bg: #dddddd;
+	--font-family: "Be Vietnam Pro", Roboto, sans-serif;
 }
 
 body {
 	background: var(--bg-color);
 	color: var(--text-color);
-	font-family: Roboto, sans-serif;
+	font-family: var(--font-family);
+	font-size: 16px;
 	margin: 20px;
 	display: flex;
 	flex-direction: column;
@@ -38,7 +40,6 @@ th {
 	align-items: center;
 	justify-content: center;
 	width: auto;
-	margin: 20px 0;
 	padding: 0;
 	box-sizing: border-box;
 }
